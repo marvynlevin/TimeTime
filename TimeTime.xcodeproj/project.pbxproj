@@ -11,6 +11,11 @@
 		6A6EA39E2D647F9400E229B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EA39D2D647F9400E229B0 /* ContentView.swift */; };
 		6A6EA3A02D647F9500E229B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6EA39F2D647F9500E229B0 /* Assets.xcassets */; };
 		6A6EA3A32D647F9500E229B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6EA3A22D647F9500E229B0 /* Preview Assets.xcassets */; };
+		6AD5D4EB2D80179C00531707 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD5D4EA2D80179C00531707 /* HomeView.swift */; };
+		6AD5D4ED2D8018A900531707 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD5D4EC2D8018A900531707 /* TimeView.swift */; };
+		6AD5D4EF2D8018B600531707 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD5D4EE2D8018B600531707 /* CategoryView.swift */; };
+		6AD5D4F12D8018D500531707 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD5D4F02D8018D500531707 /* SettingView.swift */; };
+		6AD5D4F42D80227B00531707 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD5D4F32D80227B00531707 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +24,11 @@
 		6A6EA39D2D647F9400E229B0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6A6EA39F2D647F9500E229B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A6EA3A22D647F9500E229B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6AD5D4EA2D80179C00531707 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		6AD5D4EC2D8018A900531707 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
+		6AD5D4EE2D8018B600531707 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		6AD5D4F02D8018D500531707 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		6AD5D4F32D80227B00531707 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +61,7 @@
 		6A6EA39A2D647F9400E229B0 /* TimeTime */ = {
 			isa = PBXGroup;
 			children = (
+				6AD5D4F22D80223800531707 /* Extensions */,
 				6A6EA3AB2D647FC600E229B0 /* Models */,
 				6A6EA3AA2D647FBE00E229B0 /* Views */,
 				6A6EA3A92D647FAE00E229B0 /* ViewModels */,
@@ -80,6 +91,10 @@
 			isa = PBXGroup;
 			children = (
 				6A6EA39D2D647F9400E229B0 /* ContentView.swift */,
+				6AD5D4EA2D80179C00531707 /* HomeView.swift */,
+				6AD5D4EC2D8018A900531707 /* TimeView.swift */,
+				6AD5D4EE2D8018B600531707 /* CategoryView.swift */,
+				6AD5D4F02D8018D500531707 /* SettingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -89,6 +104,14 @@
 			children = (
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		6AD5D4F22D80223800531707 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6AD5D4F32D80227B00531707 /* ColorExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,8 +184,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6AD5D4F12D8018D500531707 /* SettingView.swift in Sources */,
+				6AD5D4EB2D80179C00531707 /* HomeView.swift in Sources */,
 				6A6EA39E2D647F9400E229B0 /* ContentView.swift in Sources */,
 				6A6EA39C2D647F9400E229B0 /* TimeTimeApp.swift in Sources */,
+				6AD5D4ED2D8018A900531707 /* TimeView.swift in Sources */,
+				6AD5D4F42D80227B00531707 /* ColorExtension.swift in Sources */,
+				6AD5D4EF2D8018B600531707 /* CategoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
