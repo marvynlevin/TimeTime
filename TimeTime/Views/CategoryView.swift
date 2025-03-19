@@ -8,9 +8,31 @@
 import SwiftUI
 
 struct CategoryView: View {
+    @State private var selectedTimeUnit = "Jours"
+    let timeUnits = ["Jours", "Semaines", "Années"]
+    
     var body: some View {
         NavigationView {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            VStack {
+                VStack {
+                    Image("logoTimeTime")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 70)
+                        .padding(.vertical, 20)
+                    
+                                        
+                    Picker("Sélectionnez une unité de temps", selection: $selectedTimeUnit) {
+                                        ForEach(timeUnits, id: \.self) { unit in
+                                            Text(unit)
+                                        }
+                                    }
+                                    .pickerStyle(SegmentedPickerStyle())
+                                    .padding()
+                    
+                    Spacer()
+                }
+            }
         }
     }
 }
