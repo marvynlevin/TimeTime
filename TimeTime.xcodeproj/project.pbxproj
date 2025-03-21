@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A5272CA2D8C78BE004E5F5E /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5272C92D8C78BE004E5F5E /* CategoryViewModel.swift */; };
 		6A6EA39C2D647F9400E229B0 /* TimeTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EA39B2D647F9400E229B0 /* TimeTimeApp.swift */; };
 		6A6EA39E2D647F9400E229B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EA39D2D647F9400E229B0 /* ContentView.swift */; };
 		6A6EA3A02D647F9500E229B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6EA39F2D647F9500E229B0 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A5272C92D8C78BE004E5F5E /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		6A6EA3982D647F9400E229B0 /* TimeTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6EA39B2D647F9400E229B0 /* TimeTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTimeApp.swift; sourceTree = "<group>"; };
 		6A6EA39D2D647F9400E229B0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				6AEF79452D8AC155009123E6 /* TimeViewModel.swift */,
+				6A5272C92D8C78BE004E5F5E /* CategoryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 			files = (
 				6AD5D4F12D8018D500531707 /* SettingView.swift in Sources */,
 				6AEF79462D8AC155009123E6 /* TimeViewModel.swift in Sources */,
+				6A5272CA2D8C78BE004E5F5E /* CategoryViewModel.swift in Sources */,
 				6AD5D4EB2D80179C00531707 /* HomeView.swift in Sources */,
 				6A6EA39E2D647F9400E229B0 /* ContentView.swift in Sources */,
 				6AEF79482D8AC17B009123E6 /* TimeModel.swift in Sources */,

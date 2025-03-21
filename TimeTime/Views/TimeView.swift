@@ -1,17 +1,10 @@
-//
-//  TimeView.swift
-//  TimeTime
-//
-//  Created by levin marvyn on 11/03/2025.
-//
-
 import SwiftUI
 import Charts
 
 struct TimeView: View {
     @StateObject private var viewModel = TimeViewModel()
-    let timeUnits = ["Jours", "Mois"]
-    
+    let graphTypes = ["Barre", "Courbe"]
+
     var body: some View {
         NavigationView {
             VStack {
@@ -21,48 +14,57 @@ struct TimeView: View {
                     .frame(width: 200, height: 70)
                     .padding(.vertical, 20)
                 
-                // Picker pour sélectionner l'unité de temps
-                Picker("Unité de temps", selection: $viewModel.selectedTimeUnit) {
-                    ForEach(timeUnits, id: \.self) { unit in
-                        Text(unit)
+                Picker("Type de graphique", selection: $viewModel.selectedGraphType) {
+                    ForEach(graphTypes, id: \.self) { graph in
+                        Text(graph)
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
-                
-                // 📊 Graphique des données
-                Chart(viewModel.timeData) { data in
-                    BarMark(
-                        x: .value("Temps", data.timeUnit),
-                        y: .value("Durée", min(data.duration, 24)) // Limite à 24h max
-                    )
-                    .foregroundStyle(getBarColor(for: data.duration))
-                }
-                .frame(height: 300)
-                .chartYAxis {
-                    if viewModel.selectedTimeUnit == "Jours" {
-                        AxisMarks(position: .leading, values: Array(stride(from: 0.0, through: 24.0, by: 2.0))) { value in
+
+                if viewModel.selectedGraphType == "Barre" {
+                    Chart(viewModel.timeData) { data in
+                        BarMark(
+                            x: .value("Temps", data.timeUnit),
+                            y: .value("Durée", min(data.duration, 24))
+                        )
+                        .foregroundStyle(getBarColor(for: data.duration))
+                    }
+                    .frame(height: 300)
+                    .padding()
+                    .chartYAxis {
+                        AxisMarks(position: .leading) { value in
                             AxisValueLabel {
-                                if let hourValue = value.as(Double.self) {
-                                    Text("\(Int(hourValue))h") // Affichage en heures
+                                if let duration = value.as(Float.self), duration.truncatingRemainder(dividingBy: 2) == 0 {
+                                    Text("\(Int(duration))h")
                                 }
                             }
                         }
-                    } else { // Mode "Mois"
-                        AxisMarks(position: .leading, values: Array(stride(from: 0.0, through: 30.0, by: 2.0))) { value in
+                    }
+                }
+                
+                if viewModel.selectedGraphType == "Courbe" {
+                    Chart(viewModel.timeData) { data in
+                        LineMark(
+                            x: .value("Temps", data.timeUnit),
+                            y: .value("Durée", min(data.duration, 24))
+                        )
+                        .foregroundStyle(getCurveColor(for: data.duration))
+                    }
+                    .frame(height: 300)
+                    .padding()
+                    .chartYAxis {
+                        AxisMarks(position: .leading) { value in
                             AxisValueLabel {
-                                if let dayValue = value.as(Double.self) {
-                                    Text("\(Int(dayValue))j") // Affichage en jours
+                                if let duration = value.as(Float.self), duration.truncatingRemainder(dividingBy: 2) == 0 {
+                                    Text("\(Int(duration))h")
                                 }
                             }
                         }
                     }
                 }
 
-                .padding()
-                
-                // Message d'alerte
-                alertMessage()
+                alertSection()
                     .padding()
                 
                 Spacer()
@@ -70,42 +72,62 @@ struct TimeView: View {
         }
     }
     
-    // 🔹 Détermine la couleur des barres en fonction du temps d'utilisation
     func getBarColor(for duration: Float) -> Color {
-        switch viewModel.selectedTimeUnit {
-        case "Jours":
-            return duration > 4 ? .pink : .gray
-        case "Mois":
-            return duration > 100 ? .pink : .gray
-        default:
-            return .gray
-        }
+        return duration > 4 ? Color(hex: "#B64D6E") : .gray
     }
     
-    // 🔹 Affiche un message d'alerte en fonction du temps total d'utilisation
+    func getCurveColor(for duration: Float) -> Color {
+        return duration > 4 ? Color(hex: "#B64D6E") : .gray
+    }
+    
     @ViewBuilder
-    func alertMessage() -> some View {
+    private func alertSection() -> some View {
         let totalUsage = viewModel.timeData.reduce(0) { $0 + $1.duration }
         
         HStack {
-            Image(systemName: "person.fill")
+            Image(alertImageName(for: totalUsage))
                 .resizable()
-                .frame(width: 50, height: 50)
-                .foregroundColor(.pink)
-            
-            if totalUsage > 180 {
-                Text("📱 Aujourd'hui, vous avez été **beaucoup trop** sur votre téléphone ! Essayez de réduire cela.")
-                    .font(.body)
-                    .foregroundColor(.black)
-            } else if totalUsage > 90 {
-                Text("📱 Aujourd'hui, vous avez été **un peu trop** sur votre téléphone ! Essayez de faire une pause.")
-                    .font(.body)
-                    .foregroundColor(.black)
-            } else {
-                Text("🎉 Bravo ! Votre utilisation du téléphone est bien équilibrée.")
-                    .font(.body)
-                    .foregroundColor(.black)
+                .scaledToFit()
+                .frame(width: 120, height: 135)
+
+            VStack {
+                alertMessage(for: totalUsage)
+                    .italic()
+                    .fontWeight(.bold)
+                    .font(.system(size: 16))
+                    .lineSpacing(2)
+                    .padding(.horizontal, 5)
+                    .multilineTextAlignment(.center)
             }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 20)
+    }
+
+    private func alertImageName(for totalUsage: Float) -> String {
+        return "garcon"
+    }
+
+    @ViewBuilder
+    private func alertMessage(for totalUsage: Float) -> some View {
+        switch totalUsage {
+        case 0..<90:
+            Text("Cette semaine vous avez ")
+            + Text("respecté votre limite de temps")
+                .foregroundColor(Color(hex: "#28A745"))
+            + Text(" hebdomadaire ! Je suis fier de vous ^_^")
+        
+        case 90..<180:
+            Text("Aujourd'hui, vous avez été ")
+            + Text("un peu trop")
+                .foregroundColor(Color(hex: "#F4A261"))
+            + Text(" sur votre téléphone ! Essayez de faire une pause.")
+
+        default:
+            Text("Aujourd'hui, vous avez été ")
+            + Text("beaucoup trop")
+                .foregroundColor(Color(hex: "#E63946"))
+            + Text(" sur votre téléphone ! Pensez à réduire cela.")
         }
     }
 }

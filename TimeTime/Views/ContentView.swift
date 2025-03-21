@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  TimeTime
-//
-//  Created by levin marvyn on 18/02/2025.
-//
-
 import SwiftUI
 
 struct ContentView: View {

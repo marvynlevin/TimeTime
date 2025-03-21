@@ -1,10 +1,3 @@
-//
-//  ColorExtension.swift
-//  TimeTime
-//
-//  Created by levin marvyn on 11/03/2025.
-//
-
 import SwiftUI
 
 extension Color {
