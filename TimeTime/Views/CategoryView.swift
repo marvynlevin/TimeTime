@@ -48,7 +48,7 @@ struct CategoryView: View {
                 .foregroundStyle(data.category.color)
             }
         }
-        .frame(height: 200)
+        .frame(height: 210)
         .padding()
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
@@ -95,7 +95,7 @@ struct CategoryView: View {
                 .foregroundStyle(data.category.color)
             }
         }
-        .frame(height: 200)
+        .frame(height: 210)
         .padding()
     }
 
@@ -104,53 +104,33 @@ struct CategoryView: View {
         let totalUsage = viewModel.timeData.reduce(0) { $0 + $1.timeInHours }
 
         HStack {
-            Image(alertImageName(for: totalUsage))
+            Image("garcon")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120, height: 135)
-
             VStack {
-                alertMessage(for: totalUsage)
+                Spacer()
+                
+                Text("Vous pouvez accèder au données par app ci-dessous !")
                     .italic()
-                    .fontWeight(.bold)
                     .font(.system(size: 16))
                     .lineSpacing(2)
+                    .fontWeight(.bold)
                     .padding(.horizontal, 5)
                     .multilineTextAlignment(.center)
+                Button {
+                    // code pour le bouton
+                } label: {
+                    Text("Découvrir")
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 2)
+                        .background(Color(hex: "#B64D6E"))
+                        .cornerRadius(30)
+                }
+                Spacer()
             }
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 20)
-    }
-
-    private func alertImageName(for totalUsage: Float) -> String {
-        switch totalUsage {
-        case 0..<90: return "garcon"
-        case 90..<180: return "garcon"
-        default: return "garcon"
-        }
-    }
-
-    @ViewBuilder
-    private func alertMessage(for totalUsage: Float) -> some View {
-        switch totalUsage {
-        case 0..<90:
-            Text("Cette semaine vous avez ")
-            + Text("respecté votre limite de temps")
-                .foregroundColor(Color(hex: "#28A745"))
-            + Text(" hebdomadaire ! Je suis fier de vous ^_^")
-
-        case 90..<180:
-            Text("Aujourd'hui, vous avez été ")
-            + Text("un peu trop")
-                .foregroundColor(Color(hex: "#F4A261"))
-            + Text(" sur votre téléphone ! Essayez de faire une pause.")
-
-        default:
-            Text("Aujourd'hui, vous avez été ")
-            + Text("beaucoup trop")
-                .foregroundColor(Color(hex: "#E63946"))
-            + Text(" sur votre téléphone ! Pensez à réduire cela.")
-        }
     }
 }

@@ -45,7 +45,7 @@ struct TimeView: View {
             )
             .foregroundStyle(getBarColor(for: data.duration))
         }
-        .frame(height: 300)
+        .frame(height: 318)
         .padding()
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
@@ -69,7 +69,7 @@ struct TimeView: View {
             )
             .foregroundStyle(getCurveColor(for: data.duration))
         }
-        .frame(height: 300)
+        .frame(height: 318)
         .padding()
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
@@ -113,7 +113,6 @@ struct TimeView: View {
             }
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 20)
     }
 
     private func alertImageName(for totalUsage: Float) -> String {
@@ -124,22 +123,22 @@ struct TimeView: View {
     private func alertMessage(for totalUsage: Float) -> some View {
         switch totalUsage {
         case 0..<90:
-            Text("Cette semaine vous avez ")
+            Text("Aujourd'hui vous avez ")
             + Text("respecté votre limite de temps")
                 .foregroundColor(Color(hex: "#28A745"))
-            + Text(" hebdomadaire ! Je suis fier de vous ^_^")
-        
+            + Text(" !")
+
         case 90..<180:
             Text("Aujourd'hui, vous avez été ")
             + Text("un peu trop")
                 .foregroundColor(Color(hex: "#F4A261"))
-            + Text(" sur votre téléphone ! Essayez de faire une pause.")
+            + Text(" sur votre téléphone !")
 
         default:
             Text("Aujourd'hui, vous avez été ")
             + Text("beaucoup trop")
                 .foregroundColor(Color(hex: "#E63946"))
-            + Text(" sur votre téléphone ! Pensez à réduire cela.")
+            + Text(" sur votre téléphone !")
         }
     }
 }

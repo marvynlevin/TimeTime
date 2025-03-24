@@ -46,9 +46,11 @@ struct HomeView: View {
                         .padding(.bottom, 5)
                     HStack {
                         Text("5h 14min 24sec")
+                            .fontWeight(.bold)
                             .font(.system(size: 22))
                             .foregroundColor(Color(hex: "#B64D6E"))
                         Text("Spotify")
+                            .fontWeight(.bold)
                             .font(.system(size: 22))
                             .foregroundColor(Color(hex: "#B64D6E"))
                     }
@@ -67,9 +69,10 @@ struct HomeView: View {
                     
                     Spacer()
                 }
+                .padding(.vertical, 63)
                 
                 
-                Spacer()
+                Spacer()// ici je voudrais pouvoir pousser le tout vers le bas comment faire ?
                 
                 HStack {
                     Image("garcon")
