@@ -24,8 +24,10 @@ struct CategoryView: View {
 
                 if viewModel.selectedGraphType == "Barre" {
                     stackedBarChart()
+                    categoryLegend()
                 } else if viewModel.selectedGraphType == "Camembert" {
                     pieChart()
+                    categoryLegend()
                 }
 
                 Spacer()
@@ -43,10 +45,10 @@ struct CategoryView: View {
                     x: .value("Jour", data.day),
                     y: .value("Durée", min(data.totalHours, 24))
                 )
-                .foregroundStyle(data.category.color) // Utilisation des couleurs définies pour chaque catégorie
+                .foregroundStyle(data.category.color)
             }
         }
-        .frame(height: 300)
+        .frame(height: 200)
         .padding()
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
@@ -59,6 +61,26 @@ struct CategoryView: View {
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    private func categoryLegend() -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(AppCategory.allCases, id: \.self) { category in
+                            HStack {
+                                Circle()
+                                    .fill(category.color)
+                                    .frame(width: 10, height: 10)
+                                
+                                Text(category.rawValue)
+                                    .font(.footnote)
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                            }
+                        }
+        }
+        .padding()
     }
 
     @ViewBuilder
@@ -73,7 +95,7 @@ struct CategoryView: View {
                 .foregroundStyle(data.category.color)
             }
         }
-        .frame(height: 300)
+        .frame(height: 200)
         .padding()
     }
 

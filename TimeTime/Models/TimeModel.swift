@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum AppCategory: String {
+enum AppCategory: String, CaseIterable {
     case video = "Vidéo"
     case socialMedia = "Réseaux sociaux"
     case music = "Musique"
@@ -9,11 +9,11 @@ enum AppCategory: String {
     var color: Color {
         switch self {
         case .video:
-            return Color(hex: "#A7D8D8")
+            return Color(hex: "#C95479")
         case .socialMedia:
-            return Color(hex: "#F7A8B8")
+            return Color(hex: "#61A9A9")
         case .music:
-            return Color(hex: "#FFB3B3")
+            return Color(hex: "#954FC4")
         }
     }
 }
