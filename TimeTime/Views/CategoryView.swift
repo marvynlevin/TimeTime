@@ -43,23 +43,23 @@ struct CategoryView: View {
                     x: .value("Jour", data.day),
                     y: .value("Durée", min(data.totalHours, 24))
                 )
-                .foregroundStyle(by: .value("Catégorie", data.category.rawValue))
-                .position(by: .value("Catégorie", data.category.rawValue))
+                .foregroundStyle(data.category.color) // Utilisation des couleurs définies pour chaque catégorie
             }
         }
         .frame(height: 300)
         .padding()
         .chartYAxis {
-            AxisMarks(position: .leading) { value in
+            AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
+                AxisGridLine()
+                AxisTick()
                 AxisValueLabel {
-                    if let duration = value.as(Float.self), duration.truncatingRemainder(dividingBy: 2) == 0 {
-                        Text("\(Int(duration))h")
+                    if let duration = value.as(Int.self) {
+                        Text("\(duration)h")
                     }
                 }
             }
         }
     }
-
 
     @ViewBuilder
     private func pieChart() -> some View {
@@ -80,8 +80,6 @@ struct CategoryView: View {
     @ViewBuilder
     private func alertSection() -> some View {
         let totalUsage = viewModel.timeData.reduce(0) { $0 + $1.timeInHours }
-        
-        Spacer()
 
         HStack {
             Image(alertImageName(for: totalUsage))
@@ -119,7 +117,7 @@ struct CategoryView: View {
             + Text("respecté votre limite de temps")
                 .foregroundColor(Color(hex: "#28A745"))
             + Text(" hebdomadaire ! Je suis fier de vous ^_^")
-        
+
         case 90..<180:
             Text("Aujourd'hui, vous avez été ")
             + Text("un peu trop")

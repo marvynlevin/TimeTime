@@ -14,10 +14,21 @@ class CategoryViewModel: ObservableObject {
     var groupedTimeData: [(day: String, category: AppCategory, totalHours: Float)] {
         let groupedDictionary = Dictionary(grouping: timeData) { TimeGroupKey(date: $0.date, category: $0.category) }
 
-        return groupedDictionary.flatMap { (key, values) in
-            return values.map { _ in (day: getDayOfWeek(from: key.date), category: key.category, totalHours: values.reduce(0) { $0 + $1.timeInHours }) }
+        var result: [(day: String, category: AppCategory, totalHours: Float)] = []
+
+        for (key, values) in groupedDictionary {
+            let totalHours = values.reduce(0) { $0 + $1.timeInHours }
+            let day = getDayOfWeek(from: key.date)
+            result.append((day: day, category: key.category, totalHours: totalHours))
+        }
+
+        return result.sorted { (first, second) in
+            guard let firstIndex = daysOfWeek.firstIndex(of: first.day),
+                  let secondIndex = daysOfWeek.firstIndex(of: second.day) else { return false }
+            return firstIndex < secondIndex
         }
     }
+
 
     var totalByCategory: [(category: AppCategory, totalHours: Float)] {
         Dictionary(grouping: timeData) { $0.category }

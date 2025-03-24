@@ -23,45 +23,9 @@ struct TimeView: View {
                 .padding()
 
                 if viewModel.selectedGraphType == "Barre" {
-                    Chart(viewModel.timeData) { data in
-                        BarMark(
-                            x: .value("Temps", data.timeUnit),
-                            y: .value("Durée", min(data.duration, 24))
-                        )
-                        .foregroundStyle(getBarColor(for: data.duration))
-                    }
-                    .frame(height: 300)
-                    .padding()
-                    .chartYAxis {
-                        AxisMarks(position: .leading) { value in
-                            AxisValueLabel {
-                                if let duration = value.as(Float.self), duration.truncatingRemainder(dividingBy: 2) == 0 {
-                                    Text("\(Int(duration))h")
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                if viewModel.selectedGraphType == "Courbe" {
-                    Chart(viewModel.timeData) { data in
-                        LineMark(
-                            x: .value("Temps", data.timeUnit),
-                            y: .value("Durée", min(data.duration, 24))
-                        )
-                        .foregroundStyle(getCurveColor(for: data.duration))
-                    }
-                    .frame(height: 300)
-                    .padding()
-                    .chartYAxis {
-                        AxisMarks(position: .leading) { value in
-                            AxisValueLabel {
-                                if let duration = value.as(Float.self), duration.truncatingRemainder(dividingBy: 2) == 0 {
-                                    Text("\(Int(duration))h")
-                                }
-                            }
-                        }
-                    }
+                    barChartView()
+                } else if viewModel.selectedGraphType == "Courbe" {
+                    lineChartView()
                 }
 
                 alertSection()
@@ -71,7 +35,55 @@ struct TimeView: View {
             }
         }
     }
-    
+
+    @ViewBuilder
+    private func barChartView() -> some View {
+        Chart(viewModel.timeData) { data in
+            BarMark(
+                x: .value("Temps", data.timeUnit),
+                y: .value("Durée", min(data.duration, 24))
+            )
+            .foregroundStyle(getBarColor(for: data.duration))
+        }
+        .frame(height: 300)
+        .padding()
+        .chartYAxis {
+            AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
+                AxisGridLine()
+                AxisTick()
+                AxisValueLabel {
+                    if let duration = value.as(Int.self) {
+                        Text("\(duration)h")
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func lineChartView() -> some View {
+        Chart(viewModel.timeData) { data in
+            LineMark(
+                x: .value("Temps", data.timeUnit),
+                y: .value("Durée", min(data.duration, 24))
+            )
+            .foregroundStyle(getCurveColor(for: data.duration))
+        }
+        .frame(height: 300)
+        .padding()
+        .chartYAxis {
+            AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
+                AxisGridLine()
+                AxisTick()
+                AxisValueLabel {
+                    if let duration = value.as(Int.self) {
+                        Text("\(duration)h")
+                    }
+                }
+            }
+        }
+    }
+
     func getBarColor(for duration: Float) -> Color {
         return duration > 4 ? Color(hex: "#B64D6E") : .gray
     }
