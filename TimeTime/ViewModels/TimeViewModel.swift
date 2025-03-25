@@ -5,10 +5,13 @@ class TimeViewModel: ObservableObject {
     @Published var selectedGraphType: String = "Barre"
     
     private var timeUsageData: [Time] = []
+    
+    @Published var todayUsage: Float = 0
+    @Published var yesterdayUsage: Float = 0
+    @Published var topAppsToday: [(String, Float)] = []
 
     init() {
         loadTimeData()
-        calculateData()
     }
     
     func loadTimeData() {
@@ -18,6 +21,7 @@ class TimeViewModel: ObservableObject {
 
     func calculateData() {
         generateWeeklyData()
+        calculateDailyUsage()
     }
 
     private func generateWeeklyData() {
@@ -41,6 +45,25 @@ class TimeViewModel: ObservableObject {
             let totalHours = groupedByDay[day]?.reduce(0) { $0 + $1.timeInHours } ?? 0
             return TimeData(timeUnit: day, duration: totalHours)
         }
+    }
+    
+    private func calculateDailyUsage() {
+        let sortedDates = timeUsageData.map { $0.date }.sorted(by: >)
+        guard let latestDate = sortedDates.first else { return }
+        
+        let todayData = timeUsageData.filter { $0.date == latestDate }
+        todayUsage = todayData.reduce(0) { $0 + $1.timeInHours }
+        
+        if let yesterdayDate = sortedDates.dropFirst().first {
+            let yesterday = timeUsageData.filter { $0.date == yesterdayDate }
+            yesterdayUsage = yesterday.reduce(0) { $0 + $1.timeInHours }
+        } else {
+            yesterdayUsage = 0
+        }
+        
+        topAppsToday = todayData
+            .sorted { $0.timeInHours > $1.timeInHours }
+            .map { ($0.appName, $0.timeInHours) }
     }
 }
 

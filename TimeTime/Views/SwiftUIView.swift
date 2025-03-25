@@ -1,8 +1,6 @@
 import SwiftUI
 
-struct HomeView: View {
-    @StateObject private var timeVM = TimeViewModel()
-
+struct SwiftUIView: View {
     var body: some View {
         NavigationView {
             VStack {
@@ -12,86 +10,85 @@ struct HomeView: View {
                         .scaledToFit()
                         .frame(width: 200, height: 70)
                         .padding(.vertical, 20)
-
+                    
                     Text("\"Maitrisez votre temps, optimisez votre vie.\"")
-
+                    
                     Spacer()
                 }
-
+                
                 VStack {
                     Text("Votre temps aujourd'hui")
                         .font(.system(size: 20))
                         .fontWeight(.bold)
                         .padding(.bottom, 5)
-
                     HStack(spacing: 0) {
-                        Text("\(Int(timeVM.todayUsage))h")
+                        Text("5h")
                             .font(.system(size: 22))
                             .foregroundColor(Color(hex: "#B64D6E"))
-                        Text(" \(Int((timeVM.todayUsage - Float(Int(timeVM.todayUsage))) * 60))min")
+                        Text(" 14min 24sec")
                             .font(.system(size: 22))
                             .foregroundColor(.black)
                     }
-
-                    let difference = timeVM.todayUsage - timeVM.yesterdayUsage
-                    Text("\(Float(timeVM.todayUsage))")
-                    Text("\(Float(timeVM.yesterdayUsage))")
-                    Text("\(Int(difference))")
-                    Text("C'est ")
+                    Text("C'est 1h 34min 12sec de ")
                         .foregroundColor(.black)
-                    + Text("\(abs(Int(difference)))h \(abs(Int((difference - Float(Int(difference))) * 60)))min ")
-                        .foregroundColor(difference < 0 ? .green : .red)
-                    + Text(difference < 0 ? "de moins" : "de plus")
-                        .foregroundColor(.black)
+                    + Text("moins")
+                        .foregroundColor(.green)
                     + Text(" que hier")
                         .foregroundColor(.black)
-                }
 
+                }
+                
                 VStack {
                     Spacer()
-                    Text("Vos applications")
+                    Text("Vos catégories")
                         .font(.system(size: 20))
                         .fontWeight(.bold)
                         .padding(.bottom, 5)
-
-                    ForEach(Array(timeVM.topAppsToday.prefix(3).enumerated()), id: \.offset) { index, element in
-                        let (app, duration) = element
-                        HStack {
-                            Text("\(Int(duration))h \(Int((duration - Float(Int(duration))) * 60))min")
-                                .fontWeight(index == 0 ? .bold : .regular)
-                                .font(.system(size: 22))
-                                .foregroundColor(index == 0 ? Color(hex: "#B64D6E") : .black)
-
-                            Text(app)
-                                .fontWeight(index == 0 ? .bold : .regular)
-                                .font(.system(size: 22))
-                                .foregroundColor(index == 0 ? Color(hex: "#B64D6E") : .black)
-                        }
+                    HStack {
+                        Text("5h 14min 24sec")
+                            .fontWeight(.bold)
+                            .font(.system(size: 22))
+                            .foregroundColor(Color(hex: "#B64D6E"))
+                        Text("Spotify")
+                            .fontWeight(.bold)
+                            .font(.system(size: 22))
+                            .foregroundColor(Color(hex: "#B64D6E"))
                     }
-
+                    HStack {
+                        Text("52min")
+                            .font(.system(size: 22))
+                        Text("Waze")
+                            .font(.system(size: 22))
+                    }
+                    HStack {
+                        Text("48min")
+                            .font(.system(size: 22))
+                        Text("Instagram")
+                            .font(.system(size: 22))
+                    }
+                    
                     Spacer()
                 }
                 .padding(.vertical, 63)
-
-                Spacer()
-
+                
+                
+                Spacer()// ici je voudrais pouvoir pousser le tout vers le bas comment faire ?
+                
                 HStack {
                     Image("garcon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 120, height: 135)
-
                     VStack {
                         Spacer()
-
-                        Text("Pour toutes informations complémentaires, vous pouvez accéder au manuel !")
+                        
+                        Text("Pour toutes informations complémentaires, vous pouvez accèder au manuel !")
                             .italic()
                             .font(.system(size: 16))
                             .lineSpacing(2)
                             .fontWeight(.bold)
                             .padding(.horizontal, 5)
                             .multilineTextAlignment(.center)
-
                         Button {
                             // code pour le bouton
                         } label: {
@@ -102,7 +99,6 @@ struct HomeView: View {
                                 .background(Color(hex: "#B64D6E"))
                                 .cornerRadius(30)
                         }
-
                         Spacer()
                     }
                 }
@@ -113,5 +109,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    SwiftUIView()
 }

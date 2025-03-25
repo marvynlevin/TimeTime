@@ -101,8 +101,6 @@ struct CategoryView: View {
 
     @ViewBuilder
     private func alertSection() -> some View {
-        let totalUsage = viewModel.timeData.reduce(0) { $0 + $1.timeInHours }
-
         HStack {
             Image("garcon")
                 .resizable()

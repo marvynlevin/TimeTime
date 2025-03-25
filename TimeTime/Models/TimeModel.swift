@@ -41,7 +41,9 @@ struct Time: Identifiable {
         
         Time(appName: "Snapchat", date: "2025-03-01", timeInHours: 1.1, category: .socialMedia),
         
-        Time(appName: "Snapchat", date: "2025-03-02", timeInHours: 3.1, category: .socialMedia),
-        Time(appName: "YouTube", date: "2025-03-02", timeInHours: 5.1, category: .socialMedia),
+        Time(appName: "Snapchat", date: "2025-03-02", timeInHours: 2.1, category: .socialMedia),
+        Time(appName: "YouTube", date: "2025-03-02", timeInHours: 1.1, category: .socialMedia),
+        Time(appName: "Netflix", date: "2025-03-02", timeInHours: 2.0, category: .video),
+        Time(appName: "Spotify", date: "2025-03-02", timeInHours: 3.2, category: .music),
     ]
 }

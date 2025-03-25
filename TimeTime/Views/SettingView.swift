@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingView: View {
     var body: some View {
         NavigationView {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            // ici on a 4 grands boutons gris qui prennent presque toute la largeur de l'ecran, arrondis a moitié, avec un logo a gauche du bouton et un texte a coté
         }
     }
 }
