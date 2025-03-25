@@ -1,19 +1,41 @@
-//
-//  DetailsAppCategoryView.swift
-//  TimeTime
-//
-//  Created by levin marvyn on 25/03/2025.
-//
-
 import SwiftUI
 
 struct DetailsAppCategoryView: View {
+    @StateObject private var categoryVM = CategoryViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         VStack {
-            // ici on va afficher ls instances de RowView pour avoir la liste des apps (noms, durée, category) sur lequelles nous pouvons cliquer et ca nous renvoit sur les params par apps
+            Text("Applications utilisées")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            List(categoryVM.latestDayApps) { time in
+                RowView(app: time)
+            }
         }
-        
-        Text("DetailsAppCategoryView")
+        .padding(.bottom, 18)
+        .navigationBarBackButtonHidden(true) // Cache le bouton de retour par défaut
+            .navigationBarItems(leading: Button(action: {
+                // Action quand tu appuies sur le bouton de retour personnalisé
+                // Par exemple, revenir en arrière
+                // Cela fonctionne car NavigationView gère l'état de la pile de navigation
+                // avec la logique de NavigationLink
+                self.presentationMode.wrappedValue.dismiss()
+            }) {
+                HStack {
+                    Image(systemName: "chevron.left") // Icône de retour
+                        .foregroundColor(Color(hex: "#B64D6E"))
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                    Text("Temps par catégorie") // Ton texte personnalisé
+                        .foregroundColor(Color(hex: "#B64D6E"))
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                }
+            })
     }
 }
 

@@ -47,7 +47,7 @@ struct ContentView: View {
                     )
                     .shadow(color: .black.opacity(0.8), radius:8, x:0, y:3)
             }
-            .zIndex(2)
+            .zIndex(80)
         }
         .edgesIgnoringSafeArea(.bottom)
         .background(Color.pink.opacity(0.1))

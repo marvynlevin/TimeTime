@@ -10,7 +10,18 @@ class CategoryViewModel: ObservableObject {
     @Published var timeData: [Time] = Time.testData
 
     let daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
+   
+    
+    var latestDayApps: [Time] {
+            guard let latestDate = timeData.map({ $0.date }).max() else { return [] }
+            return timeData.filter { $0.date == latestDate }
+        }
+    
+    var totalTimeForLatestDay: Float {
+        return latestDayApps.reduce(0) { $0 + $1.timeInHours }
+    }
 
+    
     var groupedTimeData: [(day: String, category: AppCategory, totalHours: Float)] {
         let groupedDictionary = Dictionary(grouping: timeData) { TimeGroupKey(date: $0.date, category: $0.category) }
 
@@ -27,6 +38,16 @@ class CategoryViewModel: ObservableObject {
                   let secondIndex = daysOfWeek.firstIndex(of: second.day) else { return false }
             return firstIndex < secondIndex
         }
+    }
+    
+    
+    var totalByCategoryByLastDay: [(category: AppCategory, totalHours: Float)] {
+        guard let latestDate = timeData.map({ $0.date }).max() else { return [] }
+        
+        return Dictionary(grouping: timeData.filter { $0.date == latestDate }) { $0.category }
+            .map { (category, values) in
+                (category: category, totalHours: values.reduce(0) { $0 + $1.timeInHours })
+            }
     }
 
 

@@ -62,23 +62,23 @@ struct CategoryView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func categoryLegend() -> some View {
         VStack(alignment: .leading, spacing: 2) {
             ForEach(AppCategory.allCases, id: \.self) { category in
-                            HStack {
-                                Circle()
-                                    .fill(category.color)
-                                    .frame(width: 10, height: 10)
-                                
-                                Text(category.rawValue)
-                                    .font(.footnote)
-                                    .foregroundColor(.primary)
-                                
-                                Spacer()
-                            }
-                        }
+                HStack {
+                    Circle()
+                        .fill(category.color)
+                        .frame(width: 10, height: 10)
+
+                    Text(category.rawValue)
+                        .font(.footnote)
+                        .foregroundColor(.primary)
+
+                    Spacer()
+                }
+            }
         }
         .padding()
     }
@@ -86,18 +86,32 @@ struct CategoryView: View {
     @ViewBuilder
     private func pieChart() -> some View {
         Chart {
-            ForEach(viewModel.totalByCategory, id: \.category) { data in
+            ForEach(viewModel.totalByCategoryByLastDay, id: \.category) { data in
+                let angleValue = data.totalHours
+                let categoryColor = data.category.color
+                let categoryName = data.category.rawValue
+
                 SectorMark(
-                    angle: .value("Temps", data.totalHours),
+                    angle: .value("Temps", angleValue),
                     innerRadius: .ratio(0.5),
                     outerRadius: .ratio(1.0)
                 )
-                .foregroundStyle(data.category.color)
+                .foregroundStyle(categoryColor)
+                .cornerRadius(0) // Ajout d'un léger arrondi
+
+                // Annotation directement sur la partie colorée
+                .annotation(position: .overlay) {
+                    Text("\(Int(angleValue))h")
+                        .font(.caption)
+                        .bold()
+                        .foregroundColor(.white)
+                }
             }
         }
         .frame(height: 210)
         .padding()
     }
+
 
     @ViewBuilder
     private func alertSection() -> some View {
@@ -108,21 +122,20 @@ struct CategoryView: View {
                 .frame(width: 120, height: 135)
             VStack {
                 Spacer()
-                
-                Text("Vous pouvez accèder au données par app ci-dessous !")
+
+                Text("Vous pouvez accèder aux données par app de votre journée ci-dessous !")
                     .italic()
                     .font(.system(size: 16))
                     .lineSpacing(2)
                     .fontWeight(.bold)
                     .padding(.horizontal, 5)
                     .multilineTextAlignment(.center)
-                Button {
-                    // code pour le bouton
-                } label: {
+
+                NavigationLink(destination: DetailsAppCategoryView()) {
                     Text("Découvrir")
                         .foregroundColor(.white)
                         .padding(.horizontal, 10)
-                        .padding(.vertical, 2)
+                        .padding(.vertical, 5)
                         .background(Color(hex: "#B64D6E"))
                         .cornerRadius(30)
                 }

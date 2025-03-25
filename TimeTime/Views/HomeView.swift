@@ -15,7 +15,6 @@ struct HomeView: View {
 
                     Text("\"Maitrisez votre temps, optimisez votre vie.\"")
 
-                    Spacer()
                 }
 
                 VStack {
@@ -70,7 +69,7 @@ struct HomeView: View {
 
                     Spacer()
                 }
-                .padding(.vertical, 20)
+                .padding(.vertical, 36)
 
                 Spacer()
 

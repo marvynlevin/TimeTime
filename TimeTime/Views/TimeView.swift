@@ -29,9 +29,6 @@ struct TimeView: View {
                 }
 
                 alertSection()
-                    .padding()
-                
-                Spacer()
             }
         }
     }
@@ -45,7 +42,7 @@ struct TimeView: View {
             )
             .foregroundStyle(getBarColor(for: data.duration))
         }
-        .frame(height: 318)
+        .frame(height: 280)
         .padding()
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
@@ -58,6 +55,7 @@ struct TimeView: View {
                 }
             }
         }
+        .padding(.vertical, 17)
     }
 
     @ViewBuilder
@@ -69,7 +67,7 @@ struct TimeView: View {
             )
             .foregroundStyle(getCurveColor(for: data.duration))
         }
-        .frame(height: 318)
+        .frame(height: 280)
         .padding()
         .chartYAxis {
             AxisMarks(position: .leading, values: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]) { value in
@@ -82,6 +80,7 @@ struct TimeView: View {
                 }
             }
         }
+        .padding(.vertical, 17)
     }
 
     func getBarColor(for duration: Float) -> Color {
@@ -112,7 +111,7 @@ struct TimeView: View {
                     .multilineTextAlignment(.center)
             }
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 7)
     }
 
     private func alertImageName(for totalUsage: Float) -> String {
@@ -124,20 +123,20 @@ struct TimeView: View {
         switch totalUsage {
         case 0..<90:
             Text("Aujourd'hui vous avez ")
-            + Text("respecté votre limite de temps")
-                .foregroundColor(Color(hex: "#28A745"))
-            + Text(" !")
+            + Text("respecté")
+                .foregroundColor(Color(hex: "#0F9E05"))
+            + Text(" votre limite de temps !")
 
         case 90..<180:
             Text("Aujourd'hui, vous avez été ")
             + Text("un peu trop")
-                .foregroundColor(Color(hex: "#F4A261"))
+                .foregroundColor(Color(hex: "#DB0101"))
             + Text(" sur votre téléphone !")
 
         default:
             Text("Aujourd'hui, vous avez été ")
             + Text("beaucoup trop")
-                .foregroundColor(Color(hex: "#E63946"))
+                .foregroundColor(Color(hex: "#DB0101"))
             + Text(" sur votre téléphone !")
         }
     }
