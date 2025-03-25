@@ -54,11 +54,18 @@ class TimeViewModel: ObservableObject {
         let todayData = timeUsageData.filter { $0.date == latestDate }
         todayUsage = todayData.reduce(0) { $0 + $1.timeInHours }
         
-        if let yesterdayDate = sortedDates.dropFirst().first {
-            let yesterday = timeUsageData.filter { $0.date == yesterdayDate }
-            yesterdayUsage = yesterday.reduce(0) { $0 + $1.timeInHours }
-        } else {
-            yesterdayUsage = 0
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if let latestDateObject = dateFormatter.date(from: latestDate) {
+            if let yesterdayObject = Calendar.current.date(byAdding: .day, value: -1, to: latestDateObject) {
+                let yesterdayFormatted = dateFormatter.string(from: yesterdayObject)
+
+                let yesterday = timeUsageData.filter { $0.date == yesterdayFormatted }
+                yesterdayUsage = yesterday.reduce(0) { $0 + $1.timeInHours }
+            } else {
+                yesterdayUsage = 0
+            }
         }
         
         topAppsToday = todayData

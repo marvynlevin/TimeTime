@@ -19,6 +19,7 @@ struct HomeView: View {
                 }
 
                 VStack {
+                    Spacer()
                     Text("Votre temps aujourd'hui")
                         .font(.system(size: 20))
                         .fontWeight(.bold)
@@ -34,15 +35,13 @@ struct HomeView: View {
                     }
 
                     let difference = timeVM.todayUsage - timeVM.yesterdayUsage
-                    Text("\(Float(timeVM.todayUsage))")
-                    Text("\(Float(timeVM.yesterdayUsage))")
-                    Text("\(Int(difference))")
                     Text("C'est ")
                         .foregroundColor(.black)
-                    + Text("\(abs(Int(difference)))h \(abs(Int((difference - Float(Int(difference))) * 60)))min ")
-                        .foregroundColor(difference < 0 ? .green : .red)
-                    + Text(difference < 0 ? "de moins" : "de plus")
+                    + Text("\(abs(Int(difference)))h \(abs(Int((difference - Float(Int(difference))) * 60)))min de ")
                         .foregroundColor(.black)
+                    + Text(difference < 0 ? "moins" : "plus")
+                        .foregroundColor(difference < 0 ? Color(hex:"#0F9E05") : Color(hex: "#DB0101"))
+                        .fontWeight(.bold)
                     + Text(" que hier")
                         .foregroundColor(.black)
                 }
@@ -71,7 +70,7 @@ struct HomeView: View {
 
                     Spacer()
                 }
-                .padding(.vertical, 63)
+                .padding(.vertical, 20)
 
                 Spacer()
 
