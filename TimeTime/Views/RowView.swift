@@ -16,7 +16,7 @@ struct RowView: View {
                         .foregroundColor(.gray)
                 }
                 Spacer()
-                ProgressView(value: app.timeInHours / categoryVM.totalTimeForLatestDay) // Suppose un max de 5h par jour
+                ProgressView(value: app.timeInHours / categoryVM.totalTimeForLatestDay)
                     .progressViewStyle(LinearProgressViewStyle(tint: app.category.color))
                     .frame(width: 100)
             }
@@ -36,7 +36,7 @@ struct RowView: View {
                     Text("Temps total : \(Int(app.timeInHours))h \(Int((app.timeInHours - Float(Int(app.timeInHours))) * 60))min")
                 }
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color(.white))
                 .cornerRadius(10)
                 .transition(.slide)
             }

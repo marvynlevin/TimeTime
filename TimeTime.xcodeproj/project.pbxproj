@@ -13,6 +13,7 @@
 		6A17D2D52D9291340096D4EF /* CategoryLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A17D2D42D9291340096D4EF /* CategoryLimitView.swift */; };
 		6A17D2D72D92929D0096D4EF /* SleepNotifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A17D2D62D92929D0096D4EF /* SleepNotifView.swift */; };
 		6A17D2D92D9299F00096D4EF /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A17D2D82D9299F00096D4EF /* SwiftUIView.swift */; };
+		6A22D2432D94229E007E39C1 /* ManualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A22D2422D94229E007E39C1 /* ManualView.swift */; };
 		6A5272CA2D8C78BE004E5F5E /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5272C92D8C78BE004E5F5E /* CategoryViewModel.swift */; };
 		6A6EA39C2D647F9400E229B0 /* TimeTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EA39B2D647F9400E229B0 /* TimeTimeApp.swift */; };
 		6A6EA39E2D647F9400E229B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EA39D2D647F9400E229B0 /* ContentView.swift */; };
@@ -34,6 +35,7 @@
 		6A17D2D42D9291340096D4EF /* CategoryLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryLimitView.swift; sourceTree = "<group>"; };
 		6A17D2D62D92929D0096D4EF /* SleepNotifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepNotifView.swift; sourceTree = "<group>"; };
 		6A17D2D82D9299F00096D4EF /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		6A22D2422D94229E007E39C1 /* ManualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualView.swift; sourceTree = "<group>"; };
 		6A5272C92D8C78BE004E5F5E /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		6A6EA3982D647F9400E229B0 /* TimeTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6EA39B2D647F9400E229B0 /* TimeTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTimeApp.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				6A17D2D42D9291340096D4EF /* CategoryLimitView.swift */,
 				6A17D2D62D92929D0096D4EF /* SleepNotifView.swift */,
 				6A17D2D82D9299F00096D4EF /* SwiftUIView.swift */,
+				6A22D2422D94229E007E39C1 /* ManualView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 			files = (
 				6A17D2D52D9291340096D4EF /* CategoryLimitView.swift in Sources */,
 				6AD5D4F12D8018D500531707 /* SettingView.swift in Sources */,
+				6A22D2432D94229E007E39C1 /* ManualView.swift in Sources */,
 				6A17D2D92D9299F00096D4EF /* SwiftUIView.swift in Sources */,
 				6AEF79462D8AC155009123E6 /* TimeViewModel.swift in Sources */,
 				6A5272CA2D8C78BE004E5F5E /* CategoryViewModel.swift in Sources */,

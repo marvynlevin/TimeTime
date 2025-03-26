@@ -14,18 +14,26 @@ struct SettingView: View {
                     Text("\"Maitrisez votre temps, optimisez votre vie.\"")
                     
                 }
-                // ici on a 4 grands boutons gris qui prennent presque toute la largeur de l'ecran, arrondis a moitié, avec un logo a gauche du bouton et un texte a coté
-                Spacer()
 
+                VStack(spacing: 15) {
+                    navigationButton(title: "Limite de temps d'écran", icon: "gear", destination: TimeLimitView())
+                    navigationButton(title: "Limite de temps par catégorie", icon: "square.grid.2x2", destination: CategoryLimitView())
+                    navigationButton(title: "Notification heure coucher", icon: "bell.badge", destination: SleepNotifView())
+                    navigationButton(title: "Manuel d'utilisation", icon: "questionmark.circle", destination: ManualView())
+                }
+                .padding(.horizontal, 20)
+                
+                Spacer()
+                
                 HStack {
                     Image("garcon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 120, height: 135)
-
+                    
                     VStack {
                         Spacer()
-
+                        
                         Text("Pour toutes informations complémentaires, vous pouvez accéder au manuel !")
                             .italic()
                             .font(.system(size: 16))
@@ -33,7 +41,7 @@ struct SettingView: View {
                             .fontWeight(.bold)
                             .padding(.horizontal, 5)
                             .multilineTextAlignment(.center)
-
+                        
                         Button {
                             // code pour le bouton
                         } label: {
@@ -44,12 +52,35 @@ struct SettingView: View {
                                 .background(Color(hex: "#B64D6E"))
                                 .cornerRadius(30)
                         }
-
+                        
                         Spacer()
                     }
                 }
                 .padding(.horizontal, 10)
             }
+        }
+    }
+    
+    private func navigationButton<Destination: View>(title: String, icon: String, destination: Destination) -> some View {
+        NavigationLink(destination: destination) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundColor(.black)
+                    .frame(width: 30, height: 30)
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                
+                Text(title)
+                    .font(.system(size: 18))
+                    .foregroundColor(.black)
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                
+                Spacer()
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color(hex: "#F1F1F1"))
+            .cornerRadius(20)
         }
     }
 }

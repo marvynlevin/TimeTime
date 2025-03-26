@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import UserNotifications
 
 struct TimeGroupKey: Hashable {
     let date: String
@@ -8,7 +10,12 @@ struct TimeGroupKey: Hashable {
 class CategoryViewModel: ObservableObject {
     @Published var selectedGraphType: String = "Barre"
     @Published var timeData: [Time] = Time.testData
+    @Published var dailyLimit: Float = 4.0
 
+    init() {
+        requestNotificationPermission()
+    }
+    
     let daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
    
     
@@ -68,5 +75,62 @@ class CategoryViewModel: ObservableObject {
             return daysOfWeek[dayIndex >= 0 ? dayIndex : 6]
         }
         return "Inconnu"
+    }
+    
+    func increaseLimit() {
+        if dailyLimit < 12 {
+            dailyLimit += 0.5
+        }
+    }
+
+    func decreaseLimit() {
+        if dailyLimit > 2 {
+            dailyLimit -= 0.5
+        }
+    }
+    
+    // GERER LES NOTIFICATIONS ICI
+    func requestNotificationPermission() {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                if let error = error {
+                    print("Permission error : \(error.localizedDescription)")
+                } else if granted {
+                    print("Permission oui")
+                } else {
+                    print("Permission non")
+                }
+            }
+        }
+    
+    func sendLimitExceededNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Salut ! Je te fais un rappel !"
+        content.body = "Tu as atteint ta limite d'écran O_o"
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 8, repeats: false)
+        let request = UNNotificationRequest(identifier: "limitExceeded", content: content, trigger: trigger)
+        
+        if UIApplication.shared.applicationState == .active {
+            let alert = UIAlertController(title: "Salut ! Je te fais un rappel !", message: "Tu as atteint ta limite d'écran O_o", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
+                rootViewController.present(alert, animated: true)
+            }
+        }
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Notification error : \(error.localizedDescription)")
+            } else {
+                print("Notification ok")
+            }
+        }
+    }
+    
+    func checkLimitExceeded() {
+        if totalTimeForLatestDay >= dailyLimit {
+            sendLimitExceededNotification()
+        }
     }
 }
