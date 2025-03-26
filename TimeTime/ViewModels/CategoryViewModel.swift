@@ -11,8 +11,11 @@ class CategoryViewModel: ObservableObject {
     @Published var selectedGraphType: String = "Barre"
     @Published var timeData: [Time] = Time.testData
     @Published var dailyLimit: Float = 4.0
+    @Published var sleepTime: Date = Date()
+    @Published var isSleepNotificationEnabled: Bool = false
 
     init() {
+        loadSettings()
         requestNotificationPermission()
     }
     
@@ -77,17 +80,6 @@ class CategoryViewModel: ObservableObject {
         return "Inconnu"
     }
     
-    func increaseLimit() {
-        if dailyLimit < 12 {
-            dailyLimit += 0.5
-        }
-    }
-
-    func decreaseLimit() {
-        if dailyLimit > 2 {
-            dailyLimit -= 0.5
-        }
-    }
     
     // GERER LES NOTIFICATIONS ICI
     func requestNotificationPermission() {
@@ -102,6 +94,19 @@ class CategoryViewModel: ObservableObject {
             }
         }
     
+    // limite globale
+    
+    func increaseLimit() {
+        if dailyLimit < 12 {
+            dailyLimit += 0.5
+        }
+    }
+
+    func decreaseLimit() {
+        if dailyLimit > 2 {
+            dailyLimit -= 0.5
+        }
+    }
     func sendLimitExceededNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Salut ! Je te fais un rappel !"
@@ -132,5 +137,51 @@ class CategoryViewModel: ObservableObject {
         if totalTimeForLatestDay >= dailyLimit {
             sendLimitExceededNotification()
         }
+    }
+    
+    
+    // heure de coucher
+    func scheduleSleepNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Temps pour dormir!"
+        content.body = "C'est l'heure de te coucher!"
+        content.sound = .default
+        
+        let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: sleepTime)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "sleepTimeNotification", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Erreur lors de l'ajout de la notification: \(error.localizedDescription)")
+            } else {
+                print("Notification de coucher programmée avec succès")
+            }
+        }
+    }
+
+    func saveSettings() {
+        UserDefaults.standard.set(sleepTime, forKey: "sleepTime")
+        UserDefaults.standard.set(isSleepNotificationEnabled, forKey: "isSleepNotificationEnabled")
+    }
+
+    func loadSettings() {
+        if let savedSleepTime = UserDefaults.standard.object(forKey: "sleepTime") as? Date {
+            sleepTime = savedSleepTime
+        }
+        
+        isSleepNotificationEnabled = UserDefaults.standard.bool(forKey: "isSleepNotificationEnabled")
+    }
+
+    func toggleSleepNotification() {
+        if isSleepNotificationEnabled {
+            scheduleSleepNotification()
+        } else {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["sleepTimeNotification"])
+            print("Notification de coucher désactivée")
+        }
+        
+        saveSettings()
     }
 }

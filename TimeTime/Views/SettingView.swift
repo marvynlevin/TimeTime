@@ -22,8 +22,7 @@ struct SettingView: View {
                     navigationButton(title: "Manuel d'utilisation", icon: "questionmark.circle", destination: ManualView())
                 }
                 .padding(.horizontal, 20)
-                
-                Spacer()
+                .padding(.vertical, 44)
                 
                 HStack {
                     Image("garcon")

@@ -80,7 +80,7 @@ struct TimeLimitView: View {
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color(hex: <#T##String#>))
+                    .background(Color(hex: "#B64D6E"))
                     .cornerRadius(15)
             }
             .padding()
