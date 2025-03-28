@@ -3,37 +3,33 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         ZStack {
-            // Navigation basse
+            // NAVIGATION DE LA TABVIEW
             TabView {
                 HomeView()
                     .tabItem {
                         Label("Accueil", systemImage: "house")
-                            .foregroundColor(.pink)
                     }
                 
                 TimeView()
                     .tabItem {
                         Label("Temps", systemImage: "hourglass")
-                            .foregroundColor(.pink)
                     }
                 
                 CategoryView()
                     .tabItem {
                         Label("Catégories", systemImage: "chart.bar.fill")
-                            .foregroundColor(.pink)
                     }
                 
                 SettingView()
                     .tabItem {
                         Label("Paramètres", systemImage: "gearshape")
-                            .foregroundColor(.pink)
                     }
             }
             .accentColor(Color(hex: "#B64D6E"))
             .background(Color.white)
             .zIndex(1)
             
-            // Style de la navigation basse
+            // STYLES DE LA TABVIEW
             VStack {
                 Spacer()
                 Rectangle()

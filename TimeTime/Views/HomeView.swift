@@ -6,6 +6,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
+                // ENTETE DE LA PAGE
                 VStack {
                     Image("logoTimeTime")
                         .resizable()
@@ -16,7 +17,8 @@ struct HomeView: View {
                     Text("\"Maitrisez votre temps, optimisez votre vie.\"")
 
                 }
-
+                
+                // CONTENU DE LA PAGE
                 VStack {
                     Spacer()
                     Text("Votre temps aujourd'hui")
@@ -25,19 +27,24 @@ struct HomeView: View {
                         .padding(.bottom, 5)
 
                     HStack(spacing: 0) {
+                        // on récupère le temps du dernier jour enregistré en fonction de la date (h)
                         Text("\(Int(timeVM.todayUsage))h")
                             .font(.system(size: 22))
                             .foregroundColor(Color(hex: "#B64D6E"))
+                        
+                        // on récupère le temps du dernier jour enregistré en fonction de la date (min)
                         Text(" \(Int((timeVM.todayUsage - Float(Int(timeVM.todayUsage))) * 60))min")
                             .font(.system(size: 22))
                             .foregroundColor(.black)
                     }
 
+                    // récupère la différence de temps entrede la dernière date enregistré et l'avant dernière date enregistré
                     let difference = timeVM.todayUsage - timeVM.yesterdayUsage
                     Text("C'est ")
                         .foregroundColor(.black)
                     + Text("\(abs(Int(difference)))h \(abs(Int((difference - Float(Int(difference))) * 60)))min de ")
                         .foregroundColor(.black)
+                    // en fonction de var difference
                     + Text(difference < 0 ? "moins" : "plus")
                         .foregroundColor(difference < 0 ? Color(hex:"#0F9E05") : Color(hex: "#DB0101"))
                         .fontWeight(.bold)
@@ -52,6 +59,7 @@ struct HomeView: View {
                         .fontWeight(.bold)
                         .padding(.bottom, 5)
 
+                    // 
                     ForEach(Array(timeVM.topAppsToday.prefix(3).enumerated()), id: \.offset) { index, element in
                         let (app, duration) = element
                         HStack {
@@ -73,6 +81,7 @@ struct HomeView: View {
 
                 Spacer()
 
+                // BAS DE PAGE
                 HStack {
                     Image("garcon")
                         .resizable()
@@ -90,9 +99,7 @@ struct HomeView: View {
                             .padding(.horizontal, 5)
                             .multilineTextAlignment(.center)
 
-                        Button {
-                            // code pour le bouton
-                        } label: {
+                        NavigationLink(destination: ManualView()) {
                             Text("Manuel")
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 10)

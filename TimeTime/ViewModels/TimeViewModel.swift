@@ -28,9 +28,6 @@ class TimeViewModel: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        let currentDate = Date()
-        let calendar = Calendar.current
-        
         let daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
         
         let groupedByDay = Dictionary(grouping: timeUsageData, by: { timeEntry -> String? in

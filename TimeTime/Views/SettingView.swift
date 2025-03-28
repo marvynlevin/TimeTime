@@ -41,9 +41,7 @@ struct SettingView: View {
                             .padding(.horizontal, 5)
                             .multilineTextAlignment(.center)
                         
-                        Button {
-                            // code pour le bouton
-                        } label: {
+                        NavigationLink(destination: ManualView()) {
                             Text("Manuel")
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 10)
