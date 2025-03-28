@@ -13,9 +13,13 @@ class CategoryViewModel: ObservableObject {
     @Published var dailyLimit: Float = 4.0
     @Published var sleepTime: Date = Date()
     @Published var isSleepNotificationEnabled: Bool = false
+    @Published var appLimits: [String: Float] = [:]
 
+    private let appLimitsKey = "appLimits"
+    
     init() {
         loadSettings()
+        loadAppLimits()
         requestNotificationPermission()
     }
     
@@ -94,8 +98,8 @@ class CategoryViewModel: ObservableObject {
             }
         }
     
-    // limite globale
     
+    // limite globale
     func increaseLimit() {
         if dailyLimit < 12 {
             dailyLimit += 0.5
@@ -183,5 +187,60 @@ class CategoryViewModel: ObservableObject {
         }
         
         saveSettings()
+    }
+    
+    
+    // check limite par app
+    func checkAppLimitExceeded() {
+        for app in timeData {
+            if let limit = appLimits[app.appName], app.timeInHours >= limit {
+                sendAppLimitExceededNotification(appName: app.appName)
+            }
+        }
+    }
+    
+    func appsInCategory(_ category: AppCategory) -> [Time] {
+        let filteredData = timeData.filter { $0.category == category }
+        
+        let uniqueApps = Array(Set(filteredData.map { $0.appName })).compactMap { appName in
+            return filteredData.first { $0.appName == appName }
+        }
+        
+        return uniqueApps
+    }
+
+    func sendAppLimitExceededNotification(appName: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "Temps écoulé pour \(appName)!"
+        content.body = "Tu as atteint la limite définie pour \(appName)!"
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 8, repeats: false)
+        let request = UNNotificationRequest(identifier: "appLimitExceeded_\(appName)", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Erreur de notification : \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func saveAppLimits() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(appLimits) {
+            UserDefaults.standard.set(encoded, forKey: appLimitsKey)
+        }
+    }
+
+    func loadAppLimits() {
+        if let savedData = UserDefaults.standard.data(forKey: appLimitsKey),
+            let decodedLimits = try? JSONDecoder().decode([String: Float].self, from: savedData) {
+            appLimits = decodedLimits
+        }
+    }
+
+    func updateAppLimit(for appName: String, newLimit: Float) {
+        appLimits[appName] = newLimit
+        saveAppLimits()
     }
 }

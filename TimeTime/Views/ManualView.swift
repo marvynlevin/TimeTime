@@ -114,8 +114,8 @@ struct ManualView: View {
                         } label: {
                             Text("Accueil")
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 2)
                                 .background(Color(hex: "#B64D6E"))
                                 .cornerRadius(30)
                         }
