@@ -135,7 +135,7 @@ struct CategoryView: View {
                     Text("Découvrir")
                         .foregroundColor(.white)
                         .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
+                        .padding(.vertical, 2)
                         .background(Color(hex: "#B64D6E"))
                         .cornerRadius(30)
                 }

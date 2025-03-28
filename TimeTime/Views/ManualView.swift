@@ -78,6 +78,12 @@ struct ManualView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
+                        Image("logoTimeTime")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 120, height: 80)
+                            .padding(.vertical, 20)
+                            .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 10)

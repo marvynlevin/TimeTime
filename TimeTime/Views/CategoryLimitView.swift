@@ -8,21 +8,104 @@
 import SwiftUI
 
 struct CategoryLimitView: View {
+    @StateObject private var categoryVM = CategoryViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
-        // ici on a juste un bouton retour en arrière (< Paramètres généraux) avec juste en dessous un titre en gras en taille assez concecente (limite de temps par catégorie)
-        
         VStack {
-            // on boucle sur les category qui existent
-            VStack {
-                Text("nom de la category i")
-                
+            Text("Limite de temps catégorie")
+                .font(.title)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            //endessous, des boutons pour choisir une catégorie dans le TimeModel
+            
+            // lors du clic, on a alors un déroulement des app dans la catégorie, et on peut activer ou désactiver la limite pour l'app et configurer le temps avec un stepper component
+            
+            
+            
+            // on rajoutera aussi un bouton factice (juste là pour voir si ca fonctionne (on prend le dernier jour du TimeModel et on regarde si on a dépassé la limite de temps, si oui alors on a une notification à l'écran (Salut ! Je te fais un rappel ! (titre) Tu as atteint ta limite d'écran O_o (description))
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Limite par jour")
+                    .font(.system(size: 20))
+                    .fontWeight(.bold)
+                    .padding(.bottom, 5)
+                    .frame(maxWidth: .infinity, alignment: .center)
                 HStack {
-                    Text("limite temps heure, min") // doit afficher sous le format 1h 30min (et non 90min...)
-                    // switch (- + qui décremente ou incremente de 10 min par 1 min
+                    Text("\(Int(categoryVM.dailyLimit))h \(Int((categoryVM.dailyLimit - Float(Int(categoryVM.dailyLimit))) * 60))min")
+                        .font(.title2)
+                        .fontWeight(.medium)
+                        .frame(width: 120)
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Button(action: {
+                            categoryVM.decreaseLimit()
+                        }) {
+                            Image(systemName: "minus")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(.black)
+                                .frame(width: 30, height: 30)
+                        }
+                        
+                        Text("|")
+                            .foregroundColor(.black)
+                        
+                        Button(action: {
+                            categoryVM.increaseLimit()
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(.black)
+                                .frame(width: 30, height: 30)
+                        }
+                    }
+                    .padding(.vertical, 3)
+                    .padding(.horizontal, 12)
+                    .background(Color(hex: "#F1F1F1"))
+                    .cornerRadius(8)
+                    .padding(.trailing, 20)
+
                 }
+                .padding(.horizontal, 30)
             }
+            .padding()
+            
+            Spacer()
+
+            Button(action: {
+                categoryVM.checkLimitExceeded()
+            }) {
+                Text("Vérifier la limite")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(hex: "#B64D6E"))
+                    .cornerRadius(15)
+            }
+            .padding()
+
         }
-        Text("CategoryLimitView")
+        .padding(.bottom, 18)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(Color(hex: "#B64D6E"))
+                    .font(.system(size: 20))
+                    .fontWeight(.medium)
+                Text("Paramètres généraux")
+                    .foregroundColor(Color(hex: "#B64D6E"))
+                    .font(.system(size: 20))
+                    .fontWeight(.medium)
+            }
+        })
     }
 }
 
