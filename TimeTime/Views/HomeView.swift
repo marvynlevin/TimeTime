@@ -59,7 +59,7 @@ struct HomeView: View {
                         .fontWeight(.bold)
                         .padding(.bottom, 5)
 
-                    // 
+                    // TODO: A continuer de commenter..
                     ForEach(Array(timeVM.topAppsToday.prefix(3).enumerated()), id: \.offset) { index, element in
                         let (app, duration) = element
                         HStack {

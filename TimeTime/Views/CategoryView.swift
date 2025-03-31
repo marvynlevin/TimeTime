@@ -2,7 +2,7 @@ import SwiftUI
 import Charts
 
 struct CategoryView: View {
-    @StateObject private var viewModel = CategoryViewModel()
+    @StateObject private var categoryVM = CategoryViewModel()
     let graphTypes = ["Barre", "Camembert"]
 
     var body: some View {
@@ -14,7 +14,7 @@ struct CategoryView: View {
                     .frame(width: 200, height: 70)
                     .padding(.vertical, 20)
 
-                Picker("Type de graphique", selection: $viewModel.selectedGraphType) {
+                Picker("Type de graphique", selection: $categoryVM.selectedGraphType) {
                     ForEach(graphTypes, id: \.self) { graph in
                         Text(graph)
                     }
@@ -22,14 +22,14 @@ struct CategoryView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
-                if viewModel.selectedGraphType == "Barre" {
+                // On affiche un ViewBuilder en fonction du type de graphe
+                if categoryVM.selectedGraphType == "Barre" {
                     stackedBarChart()
-                    categoryLegend()
-                } else if viewModel.selectedGraphType == "Camembert" {
+                } else if categoryVM.selectedGraphType == "Camembert" {
                     pieChart()
-                    categoryLegend()
                 }
-
+                categoryLegend()
+                
                 Spacer()
 
                 alertSection()
@@ -40,7 +40,7 @@ struct CategoryView: View {
     @ViewBuilder
     private func stackedBarChart() -> some View {
         Chart {
-            ForEach(viewModel.groupedTimeData, id: \.day) { data in
+            ForEach(categoryVM.groupedTimeData, id: \.day) { data in
                 BarMark(
                     x: .value("Jour", data.day),
                     y: .value("Durée", min(data.totalHours, 24))
@@ -86,10 +86,9 @@ struct CategoryView: View {
     @ViewBuilder
     private func pieChart() -> some View {
         Chart {
-            ForEach(viewModel.totalByCategoryByLastDay, id: \.category) { data in
+            ForEach(categoryVM.totalByCategoryByLastDay, id: \.category) { data in
                 let angleValue = data.totalHours
                 let categoryColor = data.category.color
-                let categoryName = data.category.rawValue
 
                 SectorMark(
                     angle: .value("Temps", angleValue),
@@ -97,9 +96,9 @@ struct CategoryView: View {
                     outerRadius: .ratio(1.0)
                 )
                 .foregroundStyle(categoryColor)
-                .cornerRadius(0) // Ajout d'un léger arrondi
+                .cornerRadius(0)
 
-                // Annotation directement sur la partie colorée
+                // Affichage des temps en heure sur le pie chart
                 .annotation(position: .overlay) {
                     Text("\(Int(angleValue))h")
                         .font(.caption)
@@ -123,7 +122,7 @@ struct CategoryView: View {
             VStack {
                 Spacer()
 
-                Text("Vous pouvez accèder aux données par app de votre journée ci-dessous !")
+                Text("Vous pouvez accéder aux données par app de votre journée ci-dessous !")
                     .italic()
                     .font(.system(size: 16))
                     .lineSpacing(2)

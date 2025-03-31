@@ -144,6 +144,7 @@ struct ManualView: View {
             }
         }
 
+        // FONCTION PARSER DE DATA
         func parseManualText(_ text: String) -> [String] {
             let lines = text.split(separator: "\n").map { String($0) }
             var formattedLines: [String] = []

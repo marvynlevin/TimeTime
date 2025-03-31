@@ -2,7 +2,8 @@ import SwiftUI
 import Charts
 
 struct TimeView: View {
-    @StateObject private var viewModel = TimeViewModel()
+    @StateObject private var timeVM = TimeViewModel()
+    @StateObject private var categoryVM = CategoryViewModel()
     let graphTypes = ["Barre", "Courbe"]
 
     var body: some View {
@@ -14,7 +15,7 @@ struct TimeView: View {
                     .frame(width: 200, height: 70)
                     .padding(.vertical, 20)
                 
-                Picker("Type de graphique", selection: $viewModel.selectedGraphType) {
+                Picker("Type de graphique", selection: $timeVM.selectedGraphType) {
                     ForEach(graphTypes, id: \.self) { graph in
                         Text(graph)
                     }
@@ -22,9 +23,9 @@ struct TimeView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
-                if viewModel.selectedGraphType == "Barre" {
+                if timeVM.selectedGraphType == "Barre" {
                     barChartView()
-                } else if viewModel.selectedGraphType == "Courbe" {
+                } else if timeVM.selectedGraphType == "Courbe" {
                     lineChartView()
                 }
 
@@ -35,12 +36,12 @@ struct TimeView: View {
 
     @ViewBuilder
     private func barChartView() -> some View {
-        Chart(viewModel.timeData) { data in
+        Chart(timeVM.sortedDays, id: \.self) { day in
             BarMark(
-                x: .value("Temps", data.timeUnit),
-                y: .value("Durée", min(data.duration, 24))
+                x: .value("Jour", day),
+                y: .value("Durée", min(timeVM.timeForDay(day), 24))
             )
-            .foregroundStyle(getBarColor(for: data.duration))
+            .foregroundStyle(getBarColor(for: timeVM.timeForDay(day)))
         }
         .frame(height: 280)
         .padding()
@@ -60,12 +61,23 @@ struct TimeView: View {
 
     @ViewBuilder
     private func lineChartView() -> some View {
-        Chart(viewModel.timeData) { data in
-            LineMark(
-                x: .value("Temps", data.timeUnit),
-                y: .value("Durée", min(data.duration, 24))
+        Chart {
+            ForEach(timeVM.sortedDays, id: \.self) { day in
+                if let duration = timeVM.timeData[day] {
+                    LineMark(
+                        x: .value("Jour", day),
+                        y: .value("Durée", min(duration, 24))
+                    )
+                    .foregroundStyle(getCurveColor(for: duration))
+                }
+            }
+
+            RuleMark(
+                y: .value("Limite", categoryVM.dailyLimit)
             )
-            .foregroundStyle(getCurveColor(for: data.duration))
+            .foregroundStyle(.black)
+            .opacity(0.8)
+            .lineStyle(StrokeStyle(lineWidth: 2, dash: [5, 5]))
         }
         .frame(height: 280)
         .padding()
@@ -83,17 +95,21 @@ struct TimeView: View {
         .padding(.vertical, 17)
     }
 
+    // TODO: lorsqu'on change la limite globale, les graphs ne se mettent pas à jour
     func getBarColor(for duration: Float) -> Color {
-        return duration > 4 ? Color(hex: "#B64D6E") : .gray
+        let isUnderLimit = duration < categoryVM.dailyLimit
+        print("Durée: \(duration), Limite: \(categoryVM.dailyLimit)")
+        return isUnderLimit ? .gray : Color(hex: "#B64D6E")
     }
     
     func getCurveColor(for duration: Float) -> Color {
-        return duration > 4 ? Color(hex: "#B64D6E") : .gray
+        let isUnderLimit = duration < categoryVM.dailyLimit
+        return isUnderLimit ? .gray : Color(hex: "#B64D6E")
     }
     
     @ViewBuilder
     private func alertSection() -> some View {
-        let totalUsage = viewModel.timeData.reduce(0) { $0 + $1.duration }
+        let totalUsage = timeVM.timeData.reduce(0) { $0 + $1.value }
         
         HStack {
             Image(alertImageName(for: totalUsage))
@@ -121,13 +137,13 @@ struct TimeView: View {
     @ViewBuilder
     private func alertMessage(for totalUsage: Float) -> some View {
         switch totalUsage {
-        case 0..<90:
+        case 0..<categoryVM.dailyLimit:
             Text("Aujourd'hui vous avez ")
             + Text("respecté")
                 .foregroundColor(Color(hex: "#0F9E05"))
             + Text(" votre limite de temps !")
 
-        case 90..<180:
+        case 3..<categoryVM.dailyLimit+2:
             Text("Aujourd'hui, vous avez été ")
             + Text("un peu trop")
                 .foregroundColor(Color(hex: "#DB0101"))

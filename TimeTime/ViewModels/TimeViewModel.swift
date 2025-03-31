@@ -1,49 +1,91 @@
 import Foundation
 
 class TimeViewModel: ObservableObject {
-    @Published var timeData: [TimeData] = []
+
+
+    //
+    //  VARIABLES
+    //
+
+    @Published var timeData: [String: Float] = [:]
     @Published var selectedGraphType: String = "Barre"
-    
-    private var timeUsageData: [Time] = []
-    
     @Published var todayUsage: Float = 0
     @Published var yesterdayUsage: Float = 0
     @Published var topAppsToday: [(String, Float)] = []
 
+    private var timeUsageData: [Time] = []
+    let daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
+
+
     init() {
         loadTimeData()
     }
-    
+
+
+
+    //
+    //  INITIALISATION
+    //
+
     func loadTimeData() {
         timeUsageData = Time.testData
         calculateData()
     }
 
+    
+    
+    //
+    //  VARIABLES
+    //
+    
+    // Tri des jours en fonction de l'ordre dans daysOfWeek
+        var sortedDays: [String] {
+            return daysOfWeek.sorted { day1, day2 in
+                guard let index1 = daysOfWeek.firstIndex(of: day1),
+                      let index2 = daysOfWeek.firstIndex(of: day2) else { return false }
+                return index1 < index2
+            }
+        }
+    
+
+
+    //
+    //  METHODES
+    //
+    
+    // Permet de récupérer le temps total pour un jour donné
+        func timeForDay(_ day: String) -> Float {
+            return timeData[day] ?? 0
+        }
+
+    // Permet de mettre a jour l'intégralité des data
     func calculateData() {
         generateWeeklyData()
         calculateDailyUsage()
     }
 
+    // Trouver le nombre d'heures d'écran par jour
     private func generateWeeklyData() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        let daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
-        
-        let groupedByDay = Dictionary(grouping: timeUsageData, by: { timeEntry -> String? in
-            if let date = dateFormatter.date(from: timeEntry.date) {
-                let dayIndex = Calendar.current.component(.weekday, from: date) - 2
-                return dayIndex >= 0 ? daysOfWeek[dayIndex] : daysOfWeek[6]
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            let groupedByDay = Dictionary(grouping: timeUsageData, by: { timeEntry -> String? in
+                if let date = dateFormatter.date(from: timeEntry.date) {
+                    let dayIndex = Calendar.current.component(.weekday, from: date) - 2
+                    return dayIndex >= 0 ? daysOfWeek[dayIndex] : daysOfWeek[6]
+                }
+                return nil
+            })
+
+            // Remplir le dictionnaire timeData avec les données
+            timeData = daysOfWeek.reduce(into: [String: Float]()) { result, day in
+                let totalHours = groupedByDay[day]?.reduce(0) { $0 + $1.timeInHours } ?? 0
+                result[day] = totalHours
             }
-            return nil
-        })
-        
-        timeData = daysOfWeek.compactMap { day in
-            let totalHours = groupedByDay[day]?.reduce(0) { $0 + $1.timeInHours } ?? 0
-            return TimeData(timeUnit: day, duration: totalHours)
         }
-    }
-    
+
+
+    // Définit plusieurs variables (todayUsage, yesterdayUsage, topAppsToday)
     private func calculateDailyUsage() {
         let sortedDates = timeUsageData.map { $0.date }.sorted(by: >)
         guard let latestDate = sortedDates.first else { return }
@@ -68,15 +110,5 @@ class TimeViewModel: ObservableObject {
         topAppsToday = todayData
             .sorted { $0.timeInHours > $1.timeInHours }
             .map { ($0.appName, $0.timeInHours) }
-    }
-}
-
-struct TimeData: Identifiable {
-    var id = UUID()
-    var timeUnit: String
-    var duration: Float
-    
-    var formattedDuration: String {
-        return "\(Int(duration))h"
     }
 }

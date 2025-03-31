@@ -1,10 +1,3 @@
-//
-//  SleepNotifView.swift
-//  TimeTime
-//
-//  Created by levin marvyn on 25/03/2025.
-//
-
 import SwiftUI
 
 struct SleepNotifView: View {
@@ -40,7 +33,7 @@ struct SleepNotifView: View {
                             categoryVM.toggleSleepNotification()
                         }
                         .padding(.vertical, 10)
-                        .padding(.trailing, 145) // TODO: bricolage car impossible de le centrer
+                        .padding(.trailing, 145)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal)
@@ -57,7 +50,7 @@ struct SleepNotifView: View {
                 Spacer()
 
                 Button(action: {
-                    // no action
+                    // pas d'action sur ce bouton :/
                 }) {
                     Text("Pas besoin car automatique")
                         .font(.headline)

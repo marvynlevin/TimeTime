@@ -53,7 +53,6 @@ struct CategoryLimitView: View {
                                 .padding(.trailing, 10)
                             
                             
-                            // Stepper for adjusting the time limit
                             Stepper(value: Binding(
                                 get: { categoryVM.appLimits[app.appName, default: 0] },
                                 set: { newValue in
@@ -69,7 +68,6 @@ struct CategoryLimitView: View {
                             
                             Spacer()
                             
-                            // Toggle for enabling/disabling the limit
                             Toggle("", isOn: Binding(
                                 get: { categoryVM.appLimits[app.appName, default: 0] > 0 },
                                 set: { newValue in
