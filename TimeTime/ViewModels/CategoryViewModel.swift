@@ -96,16 +96,16 @@ class CategoryViewModel: ObservableObject {
 
     // Trouver le temps par jour, par catégorie pour le stack chart
     var groupedTimeData: [(day: String, category: AppCategory, totalHours: Float)] {
-        // Regroupement des données par date
+        // regrouper les données par date
         let groupedByDate = Dictionary(grouping: timeData, by: { $0.date })
 
-        // Transformation des groupes en un tableau de tuples (jour, catégorie, totalHours)
+        // tableau de tuples (jour, catégorie, totalHours)
         var result: [(day: String, category: AppCategory, totalHours: Float)] = []
 
         for (date, times) in groupedByDate {
-            // Récupère le jour de la semaine (lun, mar, mer..) à partir de la date (xx-xx-xxxx)
+            // récupérer le jour de la semaine (lun, mar, mer..) à partir de la date (xx-xx-xxxx)
             let day = getDayOfWeek(from: date)
-            // Regroupe les temps par catégorie pour ce jour
+            // regrouper les temps par catégorie pour ce jour
             let groupedByCategory = Dictionary(grouping: times, by: { $0.category })
             for (category, categoryTimes) in groupedByCategory {
                 let totalHours = categoryTimes.reduce(0) { $0 + $1.timeInHours }

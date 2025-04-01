@@ -23,6 +23,7 @@ struct TimeView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
+                // On affiche un ViewBuilder en fonction du type de graphe
                 if timeVM.selectedGraphType == "Barre" {
                     barChartView()
                 } else if timeVM.selectedGraphType == "Courbe" {
